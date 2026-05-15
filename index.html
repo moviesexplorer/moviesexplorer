@@ -525,6 +525,58 @@
         .movie-card:hover .poster-wrap img {
             transform: scale(1.03);
         }
+        
+        /* ===== VIDEO PREVIEW STYLES ===== */
+        .video-preview-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            background: #000;
+        }
+        
+        .poster-wrap:hover .video-preview-wrapper {
+            opacity: 1;
+        }
+        
+        .video-preview-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-gradient-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            pointer-events: none;
+            z-index: 4;
+        }
+        
+        .preview-label {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(229, 9, 20, 0.9);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 700;
+            z-index: 5;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+        /* ===== END VIDEO PREVIEW STYLES ===== */
+        
         .poster-quality {
             position: absolute;
             top: 6px;
@@ -535,6 +587,7 @@
             font-size: 9px;
             font-weight: 700;
             color: #fff;
+            z-index: 6;
         }
         .trending-badge {
             position: absolute;
@@ -546,6 +599,7 @@
             font-size: 9px;
             font-weight: 700;
             color: #fff;
+            z-index: 6;
             animation: glow 2s infinite;
         }
         @keyframes glow {
@@ -564,7 +618,7 @@
             display: flex;
             flex-direction: column;
             gap: 3px;
-            z-index: 2;
+            z-index: 6;
         }
         .icon-btn {
             width: 26px;
@@ -1379,9 +1433,9 @@
         const STREAM_NAMES = { n: 'Netflix', h: 'HBO', p: 'Prime', d: 'Disney+', a: 'Apple', pp: 'Paramount+', hu: 'Hulu',
             pc: 'Peacock' };
         const STREAM_CLASS = { n: 'st-n', h: 'st-h', p: 'st-p', d: 'st-d', a: 'st-a', pp: 'st-pp', hu: 'st-hu',
-            pc: 'st-pc' };
+        pc: 'st-pc' };
 
-        // MOVIE LINKS MAP - Specific links for each movie
+        // MOVIE LINKS MAP
         const MOVIE_LINKS = {
             "The Batman": "https://themoviebox.xyz/detail/batman-the-audio-adventures-aTFd4oU9kA6?id=5527533010381428312&scene=&page_from=search_detail&type=/movie/detail",
             "Dune": "https://themoviebox.xyz/detail/dune-WLVlz3JUrMa?id=9048868765454191080&scene=&page_from=search_detail&type=/movie/detail",
@@ -1435,7 +1489,61 @@
             "Joker": "https://themoviebox.xyz/detail/joker-rising-gsGA7AwNss?id=385326356067958736&scene=&page_from=search_detail&type=/movie/detail"
         };
 
-        // ALL 50 MOVIES WITH VERIFIED WORKING TMDB POSTERS
+        // MOVIE TRAILER PREVIEW VIDEOS (YouTube Video IDs for hover preview)
+        const MOVIE_TRAILERS = {
+            "The Batman": "mqqft2x_Aa4",
+            "Dune": "n9xhJrPXop4",
+            "Interstellar": "zSWdZVtXT7E",
+            "John Wick 4": "qEVUtrk8_B4",
+            "The Last of Us": "uLtkt8BonwM",
+            "Oppenheimer": "uYPbbksJxIg",
+            "Spider-Verse": "shW9i6k8cB0",
+            "Godzilla -1.0": "r7Dqcc9K2hM",
+            "Dune Part Two": "Way9Dexny3w",
+            "Deadpool & Wolverine": "73_1biulkYk",
+            "The Boys": "5SKP1_F7ReE",
+            "Barbie": "pBk4NYhWNMM",
+            "MI: Dead Reckoning": "avz06PDqDbM",
+            "Scream VI": "h74AXqw4O0g",
+            "Cocaine Bear": "DuWEEKeJLMI",
+            "The Nun II": "QF-oyCwaArU",
+            "The Bear S2": "y-cqqAJIXhs",
+            "Inception": "YoHD9XEInc0",
+            "The Dark Knight": "EXeTwQWrcwY",
+            "The Matrix": "vKQi3bBA1y8",
+            "Shawshank Redemption": "6hB3S9bIaco",
+            "Gladiator": "owK1qxDselE",
+            "Get Out": "DzfpyUB60YY",
+            "Everything Everywhere": "wxN1T1uxQ2g",
+            "A Quiet Place": "WR7cc5t7tv8",
+            "Mad Max Fury Road": "hEJnMQG9ev8",
+            "Forrest Gump": "bLvqoHBptjg",
+            "MI: Fallout": "wb49-oV0F78",
+            "Us": "hNCmb-4oXJA",
+            "Shrek": "CwXOrWvPBPk",
+            "Titanic": "2e-eXJ6HgkQ",
+            "Avatar": "5PSNL1qE6VY",
+            "Longlegs": "OG7wG8Ddc9w",
+            "Civil War": "aDyQxtg0V2w",
+            "Inside Out 2": "LEjhY15eCx0",
+            "Alien": "LjLamj-b0I8",
+            "Goodfellas": "qo5jJpHtQCY",
+            "Terminator 2": "CRRlbK5w8AE",
+            "Fight Club": "qtRKdVHc-cE",
+            "The Shining": "5Cb3ik6zP2I",
+            "The Fall Guy": "j7jPnwVGdZ8",
+            "The Incredibles": "eZbzbC9285I",
+            "No Country": "38A__WT3-o0",
+            "Arrival": "tFMo3UJ4B4g",
+            "Saving Private Ryan": "9CiW_DgxCnQ",
+            "Grand Budapest": "1Fg5iWmQjwk",
+            "Smile": "BcDK7lkzzsU",
+            "Top Gun Maverick": "giXco2jaQ_4",
+            "The Iron Claw": "8KVsaoveTbw",
+            "Joker": "zAGVQLHvwOY"
+        };
+
+        // ALL 50 MOVIES
         const MOVIES = [
             { t: "The Batman", y: 2022, g: "Action Thriller Crime", r: 8.4, tr: 1, img: "74xTEgt7R36Fpooo50r9T25onhq.jpg",
                 d: "Dark noir thriller with Robert Pattinson in corrupt Gotham.", st: "n|h" },
@@ -1557,12 +1665,10 @@
         let trClicks = {};
         let activeGenre = 'all';
         let notifications = [];
+        let activeVideoPreviews = new Map();
 
         function getMovieLink(title) {
-            // First check exact match
             if (MOVIE_LINKS[title]) return MOVIE_LINKS[title];
-            
-            // If not found, fallback to search
             return 'https://themoviebox.xyz/search?q=' + encodeURIComponent(title);
         }
 
@@ -1572,12 +1678,56 @@
             if (!last || now - last > 1800000) {
                 window.open(AD_URL, '_blank');
                 clickMap[key] = now;
-                toast('📢 Opening advertisement... Click again to watch movie');
+                toast('📢 Opening advertisement... Click again to proceed');
                 return false;
             } else {
                 actionFn();
                 return true;
             }
+        }
+
+        // ===== VIDEO PREVIEW FUNCTIONS =====
+        function initVideoPreview(posterWrap, movieTitle) {
+            const youtubeId = MOVIE_TRAILERS[movieTitle];
+            if (!youtubeId) return;
+            
+            // Create video preview wrapper
+            const previewWrapper = document.createElement('div');
+            previewWrapper.className = 'video-preview-wrapper';
+            
+            // Create iframe for YouTube preview
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('data-src', `https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&start=15&end=30&modestbranding=1&showinfo=0&rel=0&enablejsapi=1`);
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'autoplay; encrypted-media');
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.style.cssText = 'width:100%;height:100%;border:none;pointer-events:none;';
+            
+            // Create gradient overlay
+            const gradient = document.createElement('div');
+            gradient.className = 'preview-gradient-bottom';
+            
+            // Create label
+            const label = document.createElement('div');
+            label.className = 'preview-label';
+            label.textContent = '▶ PREVIEW';
+            
+            previewWrapper.appendChild(iframe);
+            previewWrapper.appendChild(gradient);
+            previewWrapper.appendChild(label);
+            posterWrap.appendChild(previewWrapper);
+            
+            // Store reference
+            activeVideoPreviews.set(posterWrap, { wrapper: previewWrapper, iframe: iframe, loaded: false });
+            
+            // Mouse enter event
+            posterWrap.addEventListener('mouseenter', () => {
+                const preview = activeVideoPreviews.get(posterWrap);
+                if (preview && !preview.loaded) {
+                    preview.iframe.src = preview.iframe.getAttribute('data-src');
+                    preview.loaded = true;
+                }
+            });
         }
 
         function init() {
@@ -1589,7 +1739,7 @@
             updateAllBadges();
             restoreBookmarks();
             if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
-            console.log('🎬 Movies Explorer • All Links Integrated • 50 Movies');
+            console.log('🎬 Movies Explorer • Video Previews Active • 50 Movies');
         }
 
         function renderTop10() {
@@ -1621,7 +1771,8 @@
         function toggleWatchlistTop10(title) {
             let wl = JSON.parse(localStorage.getItem('wl') || '[]');
             const i = wl.indexOf(title);
-            if (i > -1) { wl.splice(i, 1); toast('Removed'); } else { wl.push(title); toast('Added!'); addNotif('📋 Watchlist: ' + title); }
+            if (i > -1) { wl.splice(i, 1); toast('Removed'); }
+            else { wl.push(title); toast('Added!'); addNotif('📋 Watchlist: ' + title); }
             localStorage.setItem('wl', JSON.stringify(wl));
             updateAllBadges();
         }
@@ -1642,6 +1793,10 @@
                 card.setAttribute('data-rating', m.r);
                 card.innerHTML = `<div class="poster-wrap" onclick="openDetails('${te}')"><img src="${POSTER}${m.img}" alt="${m.t}" loading="lazy">${badge}<div class="card-actions-btns"><button class="icon-btn bookmark-btn" onclick="event.stopPropagation();toggleBookmark(this,'${te}')">🔖</button><button class="icon-btn wl-btn" onclick="event.stopPropagation();toggleWatchlistCard(this,'${te}')">➕</button></div></div><div class="card-body"><div class="card-header"><span class="card-title">${m.t}</span><span class="card-rating">⭐ ${m.r}</span></div><div class="card-meta"><span>${m.y}</span><span>EN</span><span>${m.g.split(' ')[0]}</span></div><p class="card-desc">${m.d}</p><div class="stream-tags">${streams}</div><div class="btn-row"><button class="btn-watch" onclick="handleWatch('${te}')">▶ Watch Now</button><button class="btn-dl" onclick="handleDownload(event,'${te}')">⬇ Download</button><button class="btn-tr" onclick="handleTrailer(event,'${te}')">🎬 Trailer</button></div><div class="share-row"><button class="share-btn" onclick="shareMovie('${te}','wa')">💬</button><button class="share-btn" onclick="shareMovie('${te}','tg')">📨</button><button class="share-btn" onclick="shareMovie('${te}','cp')">📋</button></div></div>`;
                 grid.appendChild(card);
+                
+                // Initialize video preview for this card
+                const posterWrap = card.querySelector('.poster-wrap');
+                initVideoPreview(posterWrap, m.t);
             });
             document.getElementById('movieGrid').appendChild(document.getElementById('noResults'));
             filterMovies();
@@ -1913,7 +2068,7 @@
             document.getElementById('progressBar').style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
             document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
         }, { passive: true });
-        
+
         document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDetails(); closeSidebar(); } });
         document.getElementById('detailsModal').addEventListener('click', function(e) { if (e.target === this) closeDetails(); });
 
