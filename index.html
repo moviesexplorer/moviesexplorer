@@ -1374,15 +1374,68 @@
 
     <script>
         const AD_URL = 'https://beansnicerroller.com/my0cbe74j?key=b6340de156f305a16e38fb1fe693022c';
-        const MOVIEBOX = 'https://themoviebox.xyz/search?q=';
         const YT_SEARCH = 'https://www.youtube.com/results?search_query=';
         const POSTER = 'https://image.tmdb.org/t/p/w500/';
         const STREAM_NAMES = { n: 'Netflix', h: 'HBO', p: 'Prime', d: 'Disney+', a: 'Apple', pp: 'Paramount+', hu: 'Hulu',
             pc: 'Peacock' };
         const STREAM_CLASS = { n: 'st-n', h: 'st-h', p: 'st-p', d: 'st-d', a: 'st-a', pp: 'st-pp', hu: 'st-hu',
-        pc: 'st-pc' };
+            pc: 'st-pc' };
 
-        // ✅ ALL 50 MOVIES WITH VERIFIED WORKING TMDB POSTERS
+        // MOVIE LINKS MAP - Specific links for each movie
+        const MOVIE_LINKS = {
+            "The Batman": "https://themoviebox.xyz/detail/batman-the-audio-adventures-aTFd4oU9kA6?id=5527533010381428312&scene=&page_from=search_detail&type=/movie/detail",
+            "Dune": "https://themoviebox.xyz/detail/dune-WLVlz3JUrMa?id=9048868765454191080&scene=&page_from=search_detail&type=/movie/detail",
+            "Interstellar": "https://themoviebox.xyz/detail/interstellar-hans-zimmer-stay-8d-audio-melancholic-melody-sleep-ambient-music-GtgNJABs4p5?id=4535898093895778424&scene=&page_from=search_detail&type=/movie/detail",
+            "John Wick 4": "https://themoviebox.xyz/detail/john-wick-chapter-4-c0njqs8B3o4?id=3682873341083275888&scene=&page_from=search_detail&type=/movie/detail",
+            "The Last of Us": "https://themoviebox.xyz/detail/the-last-of-us-Uq9yfg2ogb6?id=5188282236147228680&scene=&season=2&page_from=search_detail&type=/movie/detail",
+            "Oppenheimer": "https://themoviebox.xyz/detail/oppenheimer-MqLmfkzwCv4?id=3785258768645128376&scene=&page_from=search_detail&type=/movie/detail",
+            "Spider-Verse": "https://themoviebox.xyz/detail/spider-man-into-the-spider-verse-KLqz824EWj2?id=1948608195983723296&scene=&page_from=search_detail&type=/movie/detail",
+            "Godzilla -1.0": "https://themoviebox.xyz/detail/godzilla-king-of-the-monsters-QkPPbkHXlC9?id=8072898959959804592&scene=&page_from=search_detail&type=/movie/detail",
+            "Dune Part Two": "https://themoviebox.xyz/detail/study-group-AMtWqJv0BZ1?id=1673142031528460840&scene=&page_from=search_detail&type=/movie/detail",
+            "Deadpool & Wolverine": "https://themoviebox.xyz/detail/deadpool-and-wolverine-UmD1pHY6xU9?id=8319000940355404624&scene=&page_from=search_detail&type=/movie/detail",
+            "The Boys": "https://themoviebox.xyz/detail/the-boys-c8bx84KzD76?id=5139196938264400928&scene=&page_from=search_detail&type=/movie/detail",
+            "Barbie": "https://themoviebox.xyz/detail/barbie-and-the-three-musketeers-6xXTP45W1H2?id=2261116335411397416&scene=&page_from=search_detail&type=/movie/detail",
+            "MI: Dead Reckoning": "https://themoviebox.xyz/detail/mission-impossible-dead-reckoning-part-one-hindi-oy9fmLpwhR?id=721291523807133888&scene=&page_from=search_detail&type=/movie/detail",
+            "Scream VI": "https://themoviebox.xyz/detail/scream-vi-kyICeifoj78?id=6813388382237249840&scene=&page_from=search_detail&type=/movie/detail",
+            "Cocaine Bear": "https://themoviebox.xyz/detail/cocaine-bear-yrxbBKEi9F3?id=3074949410716010344&scene=&page_from=search_detail&type=/movie/detail",
+            "The Nun II": "https://themoviebox.xyz/detail/the-mountain-ii-cWCNO3ilUt4?id=3762074999037772008&scene=&page_from=search_detail&type=/movie/detail",
+            "The Bear S2": "https://themoviebox.xyz/detail/the-bear-YgLXVolK4Ya?id=9206255421802069968&scene=&page_from=search_detail&type=/movie/detail",
+            "Inception": "https://themoviebox.xyz/detail/from-kAJr3NmrLj?id=267563007482495928&scene=&page_from=search_detail&type=/movie/detail",
+            "The Dark Knight": "https://themoviebox.xyz/detail/the-legend-of-aang-the-last-airbender-W1QisdWvD77?id=5978482907814447832&scene=&page_from=search_detail&type=/movie/detail",
+            "The Matrix": "https://themoviebox.xyz/detail/the-matrix-resurrections-42MJ3nSjka?id=139807666590866472&scene=&page_from=search_detail&type=/movie/detail",
+            "Shawshank Redemption": "https://themoviebox.xyz/detail/the-shawshank-redemption-8WPZmZ25sP7?id=6571618275791621816&scene=&page_from=search_detail&type=/movie/detail",
+            "Gladiator": "https://themoviebox.xyz/detail/gladiator-Kl9JQPpEik6?id=5310610380127883040&scene=&page_from=search_detail&type=/movie/detail",
+            "Get Out": "https://themoviebox.xyz/detail/get-out-YS8H8EXs5y7?id=6336550197375946328&scene=&page_from=search_detail&type=/movie/detail",
+            "Everything Everywhere": "https://themoviebox.xyz/detail/everything-everywhere-all-at-once-4Ow9trRGi24?id=3388352701858734088&scene=&page_from=search_detail&type=/movie/detail",
+            "A Quiet Place": "https://themoviebox.xyz/detail/a-quiet-place-mFBQG1Ulry8?id=7180628188639674616&scene=&page_from=search_detail&type=/movie/detail",
+            "Mad Max Fury Road": "https://themoviebox.xyz/detail/furiosa-a-mad-max-saga-wICIQX8iVb3?id=2679315333927897056&scene=&page_from=search_detail&type=/movie/detail",
+            "Forrest Gump": "https://themoviebox.xyz/detail/forrest-gump-omjDmakRI3?id=50406015359143712&scene=&page_from=search_detail&type=/movie/detail",
+            "MI: Fallout": "https://themoviebox.xyz/detail/mission-impossible-fallout-KnQHmjHiIB4?id=3867742479545942264&scene=&page_from=search_detail&type=/movie/detail",
+            "Us": "https://themoviebox.xyz/detail/us-q5opkzZ0oK6?id=5663745836052799496&scene=&page_from=search_detail&type=/movie/detail",
+            "Shrek": "https://themoviebox.xyz/detail/shrek-mTc8HTgoa22?id=1707941784464019240&scene=&page_from=search_detail&type=/movie/detail",
+            "Titanic": "https://themoviebox.xyz/detail/titanic-QOuOQeUejq8?id=7070560136179630776&scene=&page_from=search_detail&type=/movie/detail",
+            "Avatar": "https://themoviebox.xyz/detail/avatar-WLDIi21IUBa?id=8906247916759695608&scene=&page_from=search_detail&type=/movie/detail",
+            "Longlegs": "https://themoviebox.xyz/detail/longlegs-UoibUg1xon4?id=3673906902141993016&scene=&page_from=search_detail&type=/movie/detail",
+            "Civil War": "https://themoviebox.xyz/detail/civil-war-sQHPl8LmW3?id=53355138546812632&scene=&page_from=search_detail&type=/movie/detail",
+            "Inside Out 2": "https://themoviebox.xyz/detail/inside-out-2-MMi31fRpyf6?id=5246367121529078256&scene=&page_from=search_detail&type=/movie/detail",
+            "Alien": "https://themoviebox.xyz/detail/alien-CRZFgtSjgQ2?id=2386090678536265736&scene=&page_from=search_detail&type=/movie/detail",
+            "Goodfellas": "https://themoviebox.xyz/detail/goodfellas-2025-M0Iv8VESPia?id=8647989053444473928&scene=&page_from=search_detail&type=/movie/detail",
+            "Terminator 2": "https://themoviebox.xyz/detail/terminator-2-judgment-day-hindi-Wjd7H0rRroa?id=8723967098462111424&scene=&page_from=search_detail&type=/movie/detail",
+            "Fight Club": "https://themoviebox.xyz/detail/fight-club-ompnMNdh2w8?id=7148079028095045304&scene=&page_from=search_detail&type=/movie/detail",
+            "The Shining": "https://themoviebox.xyz/detail/shining-hearts-0evvLjpIHD6?id=5573287584211552952&scene=&page_from=search_detail&type=/movie/detail",
+            "The Fall Guy": "https://themoviebox.xyz/detail/the-fall-guy-hindi-IMxAvAnEYZ9?id=8392699182909457248&scene=&page_from=search_detail&type=/movie/detail",
+            "The Incredibles": "https://themoviebox.xyz/detail/the-incredibles-ESHGOMUGH77?id=5979394924792401592&scene=&page_from=search_detail&type=/movie/detail",
+            "No Country": "https://themoviebox.xyz/detail/no-country-for-old-men-4CwMaMuBeE7?id=6419767832288313816&scene=&page_from=search_detail&type=/movie/detail",
+            "Arrival": "https://themoviebox.xyz/detail/arrival-i1sp6XexYda?id=8582193252751786232&scene=&page_from=search_detail&type=/movie/detail",
+            "Saving Private Ryan": "https://themoviebox.xyz/detail/saving-private-ryan-wUsEEGyldd8?id=6893291397613768480&scene=&page_from=search_detail&type=/movie/detail",
+            "Grand Budapest": "https://themoviebox.xyz/detail/budapest-noir-KlpJRYd2ZN4?id=4033841288075166544&scene=&page_from=search_detail&type=/movie/detail",
+            "Smile": "https://themoviebox.xyz/detail/smile-enorK9Hn3P1?id=1530429248522044456&scene=&page_from=search_detail&type=/movie/detail",
+            "Top Gun Maverick": "https://themoviebox.xyz/detail/top-gun-maverick-CphKhIv3EV5?id=4976856732925313496&scene=&page_from=search_detail&type=/movie/detail",
+            "The Iron Claw": "https://themoviebox.xyz/detail/the-blood-on-satans-claw-OHjKz8b1OG4?id=3936676257970145768&scene=&page_from=search_detail&type=/movie/detail",
+            "Joker": "https://themoviebox.xyz/detail/joker-rising-gsGA7AwNss?id=385326356067958736&scene=&page_from=search_detail&type=/movie/detail"
+        };
+
+        // ALL 50 MOVIES WITH VERIFIED WORKING TMDB POSTERS
         const MOVIES = [
             { t: "The Batman", y: 2022, g: "Action Thriller Crime", r: 8.4, tr: 1, img: "74xTEgt7R36Fpooo50r9T25onhq.jpg",
                 d: "Dark noir thriller with Robert Pattinson in corrupt Gotham.", st: "n|h" },
@@ -1500,10 +1553,18 @@
         ];
 
         let dlClicks = {};
-        let trClicks = {};
         let watchClicks = {};
+        let trClicks = {};
         let activeGenre = 'all';
         let notifications = [];
+
+        function getMovieLink(title) {
+            // First check exact match
+            if (MOVIE_LINKS[title]) return MOVIE_LINKS[title];
+            
+            // If not found, fallback to search
+            return 'https://themoviebox.xyz/search?q=' + encodeURIComponent(title);
+        }
 
         function handleAdThenAction(clickMap, key, actionFn) {
             const now = Date.now();
@@ -1511,9 +1572,12 @@
             if (!last || now - last > 1800000) {
                 window.open(AD_URL, '_blank');
                 clickMap[key] = now;
-                toast('📢 Ad opened • Click again to proceed');
+                toast('📢 Opening advertisement... Click again to watch movie');
                 return false;
-            } else { actionFn(); return true; }
+            } else {
+                actionFn();
+                return true;
+            }
         }
 
         function init() {
@@ -1525,7 +1589,7 @@
             updateAllBadges();
             restoreBookmarks();
             if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
-            console.log('🎬 Movies Explorer • All Posters Verified • 50 Movies');
+            console.log('🎬 Movies Explorer • All Links Integrated • 50 Movies');
         }
 
         function renderTop10() {
@@ -1537,33 +1601,38 @@
             }).join('');
         }
 
-        function scrollTop10(dir) { const row = document.getElementById('top10Row'); const w = row.querySelector(
-                '.top10-card')?.offsetWidth || 340;
-            row.scrollBy({ left: (w + 10) * dir, behavior: 'smooth' }); }
+        function scrollTop10(dir) {
+            const row = document.getElementById('top10Row');
+            const w = row.querySelector('.top10-card')?.offsetWidth || 340;
+            row.scrollBy({ left: (w + 10) * dir, behavior: 'smooth' });
+        }
 
-        function handleWatch(title) { const did = handleAdThenAction(watchClicks, title, () => { window.open(MOVIEBOX +
-                    encodeURIComponent(title), '_blank');
+        function handleWatch(title) {
+            const did = handleAdThenAction(watchClicks, title, () => {
+                const link = getMovieLink(title);
+                window.open(link, '_blank');
                 addRecent(title);
                 toast('🎬 Opening ' + title);
-                addNotif('▶ Watched: ' + title); }); if (!did) addNotif('📢 Ad Watch: ' + title); }
+                addNotif('▶ Watched: ' + title);
+            });
+            if (!did) addNotif('📢 Ad Watch: ' + title);
+        }
 
-        function toggleWatchlistTop10(title) { let wl = JSON.parse(localStorage.getItem('wl') || '[]'); const i = wl.indexOf(
-                title); if (i > -1) { wl.splice(i, 1);
-                toast('Removed'); } else { wl.push(title);
-                toast('Added!');
-                addNotif('📋 Watchlist: ' + title); }
+        function toggleWatchlistTop10(title) {
+            let wl = JSON.parse(localStorage.getItem('wl') || '[]');
+            const i = wl.indexOf(title);
+            if (i > -1) { wl.splice(i, 1); toast('Removed'); } else { wl.push(title); toast('Added!'); addNotif('📋 Watchlist: ' + title); }
             localStorage.setItem('wl', JSON.stringify(wl));
-            updateAllBadges(); }
+            updateAllBadges();
+        }
 
         function renderAllMovies() {
             const grid = document.getElementById('movieGrid');
             grid.innerHTML = '';
             MOVIES.forEach((m, i) => {
                 const q = m.r >= 8.5 ? 'IMAX' : m.r >= 8 ? '4K HDR' : m.r >= 7 ? '4K' : 'HD';
-                const streams = m.st.split('|').map(s =>
-                    `<span class="stream-tag ${STREAM_CLASS[s]}">${STREAM_NAMES[s]||s}</span>`).join('');
-                const badge = m.tr ? '<span class="trending-badge">🔥TRENDING</span>' :
-                    `<span class="poster-quality">${q}</span>`;
+                const streams = m.st.split('|').map(s => `<span class="stream-tag ${STREAM_CLASS[s]}">${STREAM_NAMES[s]||s}</span>`).join('');
+                const badge = m.tr ? '<span class="trending-badge">🔥TRENDING</span>' : `<span class="poster-quality">${q}</span>`;
                 const te = m.t.replace(/'/g, "\\'");
                 const card = document.createElement('div');
                 card.className = 'movie-card';
@@ -1581,24 +1650,20 @@
         function initGenreChips() {
             const c = document.getElementById('genreChips');
             const genres = ['Action', 'Horror', 'Sci-Fi', 'Drama', 'Comedy', 'Animation', 'Thriller', 'Crime'];
-            const icons = { Action: '⚔️', Horror: '💀', 'Sci-Fi': '🪐', Drama: '🎭', Comedy: '😂', Animation: '🎨',
-                Thriller: '🔪', Crime: '🕵️' };
+            const icons = { Action: '⚔️', Horror: '💀', 'Sci-Fi': '🪐', Drama: '🎭', Comedy: '😂', Animation: '🎨', Thriller: '🔪', Crime: '🕵️' };
             const counts = {};
             genres.forEach(g => counts[g] = 0);
-            MOVIES.forEach(m => { const mg = m.g.split(' '); genres.forEach(g => { if (mg.some(x => x.toLowerCase() === g
-                        .toLowerCase()) || (g === 'Sci-Fi' && mg.some(x => x.toLowerCase() === 'scifi'))) counts[
-                    g]++; }); });
-            genres.forEach(g => { const chip = document.createElement('span');
-                chip.className = 'chip';
-                chip.setAttribute('onclick', `filterByGenre('${g}', this)`);
-                chip.innerHTML = `${icons[g]||''} ${g} <span class="count">${counts[g]}</span>`;
-                c.appendChild(chip); });
+            MOVIES.forEach(m => { const mg = m.g.split(' '); genres.forEach(g => { if (mg.some(x => x.toLowerCase() === g.toLowerCase()) || (g === 'Sci-Fi' && mg.some(x => x.toLowerCase() === 'scifi'))) counts[g]++; }); });
+            genres.forEach(g => { const chip = document.createElement('span'); chip.className = 'chip'; chip.setAttribute('onclick', `filterByGenre('${g}', this)`); chip.innerHTML = `${icons[g]||''} ${g} <span class="count">${counts[g]}</span>`; c.appendChild(chip); });
         }
 
-        function filterByGenre(genre, el) { activeGenre = genre;
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected')); if (el) el.classList.add(
-                'selected'); if (genre === 'all') document.querySelector('.chip').classList.add('selected');
-            filterMovies(); }
+        function filterByGenre(genre, el) {
+            activeGenre = genre;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+            if (el) el.classList.add('selected');
+            if (genre === 'all') document.querySelector('.chip').classList.add('selected');
+            filterMovies();
+        }
 
         function filterMovies() {
             const s = document.getElementById('searchInput').value.toLowerCase();
@@ -1606,209 +1671,253 @@
             const yr = document.getElementById('yearFilter').value;
             const cards = document.querySelectorAll('.movie-card');
             let v = 0;
-            cards.forEach((card, i) => { const t = card.getAttribute('data-title').toLowerCase(); const g = card.getAttribute(
-                    'data-genre').toLowerCase(); const y = card.getAttribute('data-year'); let show = true; if (s && !t
-                    .includes(s) && !g.includes(s)) show = false; if (activeGenre !== 'all') { const ag = activeGenre
-                        .toLowerCase(); if (ag === 'sci-fi') { if (!g.includes('sci-fi') && !g.includes('scifi')) show =
-                        false; } else { if (!g.includes(ag)) show = false; } } if (yr !== 'all' && y !== yr) show =
-                    false;
-                card.style.display = show ? '' : 'none'; if (show) { v++;
-                    card.style.animation = `fadeUp 0.35s ${v*0.03}s both`; } });
-            document.getElementById('noResults').style.display = v === 0 ? 'block' : 'none'; if (sort !== 'default') { const
-                    grid = document.getElementById('movieGrid'); const vis = [...cards].filter(c => c.style.display !==
-                        'none');
-                vis.sort((a, b) => { if (sort === 'rating') return parseFloat(b.getAttribute('data-rating')) - parseFloat(
-                        a.getAttribute('data-rating')); if (sort === 'year') return parseInt(b.getAttribute('data-year')) -
-                        parseInt(a.getAttribute('data-year')); if (sort === 'title') return a.getAttribute('data-title')
-                        .localeCompare(b.getAttribute('data-title')); return 0; });
-                vis.forEach(c => grid.appendChild(c)); }
+            cards.forEach((card, i) => {
+                const t = card.getAttribute('data-title').toLowerCase();
+                const g = card.getAttribute('data-genre').toLowerCase();
+                const y = card.getAttribute('data-year');
+                let show = true;
+                if (s && !t.includes(s) && !g.includes(s)) show = false;
+                if (activeGenre !== 'all') { const ag = activeGenre.toLowerCase(); if (ag === 'sci-fi') { if (!g.includes('sci-fi') && !g.includes('scifi')) show = false; } else { if (!g.includes(ag)) show = false; } }
+                if (yr !== 'all' && y !== yr) show = false;
+                card.style.display = show ? '' : 'none';
+                if (show) { v++; card.style.animation = `fadeUp 0.35s ${v*0.03}s both`; }
+            });
+            document.getElementById('noResults').style.display = v === 0 ? 'block' : 'none';
+            if (sort !== 'default') {
+                const grid = document.getElementById('movieGrid');
+                const vis = [...cards].filter(c => c.style.display !== 'none');
+                vis.sort((a, b) => {
+                    if (sort === 'rating') return parseFloat(b.getAttribute('data-rating')) - parseFloat(a.getAttribute('data-rating'));
+                    if (sort === 'year') return parseInt(b.getAttribute('data-year')) - parseInt(a.getAttribute('data-year'));
+                    if (sort === 'title') return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
+                    return 0;
+                });
+                vis.forEach(c => grid.appendChild(c));
+            }
         }
 
-        function handleDownload(e, title) { e.stopPropagation(); const did = handleAdThenAction(dlClicks, title, () => { window
-                    .open(MOVIEBOX + encodeURIComponent(title), '_blank');
+        function handleDownload(e, title) {
+            e.stopPropagation();
+            const did = handleAdThenAction(dlClicks, title, () => {
+                const link = getMovieLink(title);
+                window.open(link, '_blank');
                 addRecent(title);
                 toast('⬇ Opening ' + title);
-                addNotif('⬇ Downloaded: ' + title); }); if (!did) addNotif('📢 Ad Download: ' + title); }
+                addNotif('⬇ Downloaded: ' + title);
+            });
+            if (!did) addNotif('📢 Ad Download: ' + title);
+        }
 
-        function handleTrailer(e, title) { e.stopPropagation(); const did = handleAdThenAction(trClicks, title, () => { window
-                    .open(YT_SEARCH + encodeURIComponent(title + ' trailer'), '_blank');
+        function handleTrailer(e, title) {
+            e.stopPropagation();
+            const did = handleAdThenAction(trClicks, title, () => {
+                window.open(YT_SEARCH + encodeURIComponent(title + ' trailer'), '_blank');
                 toast('▶️ Opening trailer');
-                addNotif('▶️ Trailer: ' + title); }); if (!did) addNotif('📢 Ad Trailer: ' + title); }
+                addNotif('▶️ Trailer: ' + title);
+            });
+            if (!did) addNotif('📢 Ad Trailer: ' + title);
+        }
 
-        function shareMovie(title, p) { const url = encodeURIComponent(location.href); const txt = encodeURIComponent(
-                'Check out ' + title + ' 🎬'); if (p === 'wa') window.open('https://wa.me/?text=' + txt + ' ' + url,
-                '_blank'); else if (p === 'tg') window.open('https://t.me/share/url?url=' + url + '&text=' + txt,
-            '_blank'); else { navigator.clipboard?.writeText(title + ' - ' + location.href);
-            toast('📋 Copied!'); } }
+        function shareMovie(title, p) {
+            const url = encodeURIComponent(location.href);
+            const txt = encodeURIComponent('Check out ' + title + ' 🎬');
+            if (p === 'wa') window.open('https://wa.me/?text=' + txt + ' ' + url, '_blank');
+            else if (p === 'tg') window.open('https://t.me/share/url?url=' + url + '&text=' + txt, '_blank');
+            else { navigator.clipboard?.writeText(title + ' - ' + location.href); toast('📋 Copied!'); }
+        }
 
-        function toggleBookmark(btn, title) { let bm = JSON.parse(localStorage.getItem('bm') || '[]'); const i = bm.indexOf(
-                title); if (i > -1) { bm.splice(i, 1);
-                btn.classList.remove('saved');
-                btn.textContent = '🔖';
-                toast('Removed'); } else { bm.push(title);
-                btn.classList.add('saved');
-                btn.textContent = '🔖✓';
-                toast('Bookmarked!');
-                addNotif('🔖 Bookmarked: ' + title); }
-            localStorage.setItem('bm', JSON.stringify(bm)); }
+        function toggleBookmark(btn, title) {
+            let bm = JSON.parse(localStorage.getItem('bm') || '[]');
+            const i = bm.indexOf(title);
+            if (i > -1) { bm.splice(i, 1); btn.classList.remove('saved'); btn.textContent = '🔖'; toast('Removed'); }
+            else { bm.push(title); btn.classList.add('saved'); btn.textContent = '🔖✓'; toast('Bookmarked!'); addNotif('🔖 Bookmarked: ' + title); }
+            localStorage.setItem('bm', JSON.stringify(bm));
+        }
 
-        function restoreBookmarks() { const bm = JSON.parse(localStorage.getItem('bm') || '[]');
-            document.querySelectorAll('.bookmark-btn').forEach(b => { const t = b.getAttribute('onclick')?.match(
-                    /'([^']+)'\)/)?.[1]; if (t && bm.includes(t)) { b.classList.add('saved');
-                    b.textContent = '🔖✓'; } }); }
+        function restoreBookmarks() {
+            const bm = JSON.parse(localStorage.getItem('bm') || '[]');
+            document.querySelectorAll('.bookmark-btn').forEach(b => {
+                const t = b.getAttribute('onclick')?.match(/'([^']+)'\)/)?.[1];
+                if (t && bm.includes(t)) { b.classList.add('saved'); b.textContent = '🔖✓'; }
+            });
+        }
 
-        function toggleWatchlistCard(btn, title) { let wl = JSON.parse(localStorage.getItem('wl') || '[]'); const i = wl
-                .indexOf(title); if (i > -1) { wl.splice(i, 1);
-                btn.classList.remove('saved');
-                btn.textContent = '➕';
-                toast('Removed'); } else { wl.push(title);
-                btn.classList.add('saved');
-                btn.textContent = '✓';
-                toast('Added!');
-                addNotif('📋 Watchlist: ' + title); }
+        function toggleWatchlistCard(btn, title) {
+            let wl = JSON.parse(localStorage.getItem('wl') || '[]');
+            const i = wl.indexOf(title);
+            if (i > -1) { wl.splice(i, 1); btn.classList.remove('saved'); btn.textContent = '➕'; toast('Removed'); }
+            else { wl.push(title); btn.classList.add('saved'); btn.textContent = '✓'; toast('Added!'); addNotif('📋 Watchlist: ' + title); }
             localStorage.setItem('wl', JSON.stringify(wl));
-            updateAllBadges(); }
+            updateAllBadges();
+        }
 
         function openDetails(title) {
-            const m = MOVIES.find(x => x.t === title); if (!m) return;
+            const m = MOVIES.find(x => x.t === title);
+            if (!m) return;
             const liked = JSON.parse(localStorage.getItem('liked') || '[]');
             const isLiked = liked.includes(title);
             const ratings = JSON.parse(localStorage.getItem('ratings') || '{}');
             const ur = ratings[title] || 0;
             const comments = JSON.parse(localStorage.getItem('comments') || '{}');
             const cmts = comments[title] || [];
-            const streams = m.st.split('|').map(s =>
-                `<span class="stream-tag ${STREAM_CLASS[s]}">${STREAM_NAMES[s]||s}</span>`).join('');
-            let stars = ''; for (let i = 1; i <= 5; i++) stars +=
-                `<span class="star ${i<=ur?'active':''}" onclick="rateMovie('${title.replace(/'/g,"\\'")}',${i})">★</span>`;
-            let cmtsHTML = cmts.map(c => `<div class="comment-item">${c}</div>`).join('') ||
-                '<p style="color:var(--muted);font-size:11px">No comments yet</p>';
-            const related = MOVIES.filter(x => x.t !== title && x.g.split(' ').some(g => m.g.split(' ').includes(g)))
-                .slice(0, 4);
-            let relHTML = related.map(r =>
-                `<div class="related-card" onclick="openDetails('${r.t.replace(/'/g,"\\'")}')"><img src="${POSTER}${r.img}" alt="${r.t}" loading="lazy"><div class="r-title">${r.t}</div></div>`
-                ).join('');
+            const streams = m.st.split('|').map(s => `<span class="stream-tag ${STREAM_CLASS[s]}">${STREAM_NAMES[s]||s}</span>`).join('');
+            let stars = '';
+            for (let i = 1; i <= 5; i++) stars += `<span class="star ${i<=ur?'active':''}" onclick="rateMovie('${title.replace(/'/g,"\\'")}',${i})">★</span>`;
+            let cmtsHTML = cmts.map(c => `<div class="comment-item">${c}</div>`).join('') || '<p style="color:var(--muted);font-size:11px">No comments yet</p>';
+            const related = MOVIES.filter(x => x.t !== title && x.g.split(' ').some(g => m.g.split(' ').includes(g))).slice(0, 4);
+            let relHTML = related.map(r => `<div class="related-card" onclick="openDetails('${r.t.replace(/'/g,"\\'")}')"><img src="${POSTER}${r.img}" alt="${r.t}" loading="lazy"><div class="r-title">${r.t}</div></div>`).join('');
             const te = title.replace(/'/g, "\\'");
-            document.getElementById('detailsContent').innerHTML =
-                `<div class="modal-header"><h2>🎬 ${m.t}</h2><button class="modal-close" onclick="closeDetails()">✕</button></div><div class="details-layout"><div class="details-poster"><img src="${POSTER}${m.img}" alt="${m.t}"></div><div class="details-info"><h2>${m.t}</h2><div class="meta"><span>📅 ${m.y}</span><span>⭐ ${m.r}</span><span>🎭 ${m.g}</span></div><div class="desc">${m.d}</div><div style="margin:8px 0">${streams}</div><div class="actions"><button class="btn-primary" onclick="handleWatch('${te}')">▶ Watch Now</button><button class="btn-primary" onclick="handleDownload(event,'${te}')">⬇ Download</button><button class="btn-outline" onclick="handleTrailer(event,'${te}')">🎬 Trailer</button><button class="${isLiked?'btn-liked':'btn-outline'}" onclick="toggleLike('${te}')">${isLiked?'❤️ Liked':'🤍 Like'}</button></div><div class="star-rating">${stars}</div><div class="comment-box"><textarea id="commentInput" placeholder="Write a comment..."></textarea><button onclick="addComment('${te}')">Post 💬</button><div class="comments-list">${cmtsHTML}</div></div>${relHTML?`<div class="related-section"><h4>🎯 Related Movies</h4><div class="related-grid">${relHTML}</div></div>`:''}</div></div>`;
+            document.getElementById('detailsContent').innerHTML = `<div class="modal-header"><h2>🎬 ${m.t}</h2><button class="modal-close" onclick="closeDetails()">✕</button></div><div class="details-layout"><div class="details-poster"><img src="${POSTER}${m.img}" alt="${m.t}"></div><div class="details-info"><h2>${m.t}</h2><div class="meta"><span>📅 ${m.y}</span><span>⭐ ${m.r}</span><span>🎭 ${m.g}</span></div><div class="desc">${m.d}</div><div style="margin:8px 0">${streams}</div><div class="actions"><button class="btn-primary" onclick="handleWatch('${te}')">▶ Watch Now</button><button class="btn-primary" onclick="handleDownload(event,'${te}')">⬇ Download</button><button class="btn-outline" onclick="handleTrailer(event,'${te}')">🎬 Trailer</button><button class="${isLiked?'btn-liked':'btn-outline'}" onclick="toggleLike('${te}')">${isLiked?'❤️ Liked':'🤍 Like'}</button></div><div class="star-rating">${stars}</div><div class="comment-box"><textarea id="commentInput" placeholder="Write a comment..."></textarea><button onclick="addComment('${te}')">Post 💬</button><div class="comments-list">${cmtsHTML}</div></div>${relHTML?`<div class="related-section"><h4>🎯 Related Movies</h4><div class="related-grid">${relHTML}</div></div>`:''}</div></div>`;
             document.getElementById('detailsModal').classList.add('open');
             addRecent(title);
         }
 
         function closeDetails() { document.getElementById('detailsModal').classList.remove('open'); }
 
-        function rateMovie(title, r) { const ratings = JSON.parse(localStorage.getItem('ratings') || '{}');
+        function rateMovie(title, r) {
+            const ratings = JSON.parse(localStorage.getItem('ratings') || '{}');
             ratings[title] = r;
             localStorage.setItem('ratings', JSON.stringify(ratings));
             toast('⭐ Rated ' + r + ' stars!');
             addNotif('⭐ Rated: ' + title);
-            openDetails(title); }
+            openDetails(title);
+        }
 
-        function addComment(title) { const inp = document.getElementById('commentInput'); if (!inp || !inp.value.trim()) return;
-            const comments = JSON.parse(localStorage.getItem('comments') || '{}'); if (!comments[title]) comments[title] = [];
+        function addComment(title) {
+            const inp = document.getElementById('commentInput');
+            if (!inp || !inp.value.trim()) return;
+            const comments = JSON.parse(localStorage.getItem('comments') || '{}');
+            if (!comments[title]) comments[title] = [];
             comments[title].push(inp.value.trim());
             localStorage.setItem('comments', JSON.stringify(comments));
             toast('💬 Comment added!');
             addNotif('💬 Comment: ' + title);
-            openDetails(title); }
+            openDetails(title);
+        }
 
-        function toggleLike(title) { let liked = JSON.parse(localStorage.getItem('liked') || '[]'); const i = liked.indexOf(
-                title); if (i > -1) { liked.splice(i, 1);
-                toast('Removed'); } else { liked.push(title);
-                toast('❤️ Liked!');
-                addNotif('❤️ Liked: ' + title); }
+        function toggleLike(title) {
+            let liked = JSON.parse(localStorage.getItem('liked') || '[]');
+            const i = liked.indexOf(title);
+            if (i > -1) { liked.splice(i, 1); toast('Removed'); }
+            else { liked.push(title); toast('❤️ Liked!'); addNotif('❤️ Liked: ' + title); }
             localStorage.setItem('liked', JSON.stringify(liked));
             updateAllBadges();
-            openDetails(title); }
+            openDetails(title);
+        }
 
-        function openSidebar(type) { document.getElementById('sidebarOverlay').classList.add('show'); if (type ===
-                'watchlist') { renderWatchlistSidebar();
-                document.getElementById('watchlistSidebar').classList.add('open'); } else if (type === 'liked') {
-                renderLikedSidebar();
-                document.getElementById('likedSidebar').classList.add('open'); } else if (type === 'notifications') {
-                renderNotifSidebar();
-                document.getElementById('notificationsSidebar').classList.add('open');
-                document.getElementById('notifBadge').style.display = 'none'; } }
+        function openSidebar(type) {
+            document.getElementById('sidebarOverlay').classList.add('show');
+            if (type === 'watchlist') { renderWatchlistSidebar(); document.getElementById('watchlistSidebar').classList.add('open'); }
+            else if (type === 'liked') { renderLikedSidebar(); document.getElementById('likedSidebar').classList.add('open'); }
+            else if (type === 'notifications') { renderNotifSidebar(); document.getElementById('notificationsSidebar').classList.add('open'); document.getElementById('notifBadge').style.display = 'none'; }
+        }
 
-        function closeSidebar() { document.getElementById('sidebarOverlay').classList.remove('show');
-            document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('open')); }
+        function closeSidebar() {
+            document.getElementById('sidebarOverlay').classList.remove('show');
+            document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('open'));
+        }
 
-        function renderWatchlistSidebar() { const wl = JSON.parse(localStorage.getItem('wl') || '[]'); const ct = document
-                .getElementById('watchlistContent'); if (!wl.length) { ct.innerHTML =
-                    '<div class="sidebar-empty"><span class="icon">📋</span><p>Empty</p></div>'; return; }
-            ct.innerHTML = wl.map(t => { const m = MOVIES.find(x => x.t === t); if (!m) return ''; return `
-                    <div class="sidebar-item" onclick="openDetails('${t.replace(/'/g,"\\'")}');closeSidebar()"><img src="${POSTER}${m.img}" alt="${t}"><div><h4>${t}</h4><p>⭐ ${m.r} • ${m.y}</p></div></div>`; }
-                ).join(''); }
+        function renderWatchlistSidebar() {
+            const wl = JSON.parse(localStorage.getItem('wl') || '[]');
+            const ct = document.getElementById('watchlistContent');
+            if (!wl.length) { ct.innerHTML = '<div class="sidebar-empty"><span class="icon">📋</span><p>Empty</p></div>'; return; }
+            ct.innerHTML = wl.map(t => {
+                const m = MOVIES.find(x => x.t === t);
+                if (!m) return '';
+                return `<div class="sidebar-item" onclick="openDetails('${t.replace(/'/g,"\\'")}');closeSidebar()"><img src="${POSTER}${m.img}" alt="${t}"><div><h4>${t}</h4><p>⭐ ${m.r} • ${m.y}</p></div></div>`;
+            }).join('');
+        }
 
-        function renderLikedSidebar() { const liked = JSON.parse(localStorage.getItem('liked') || '[]'); const ct = document
-                .getElementById('likedContent'); if (!liked.length) { ct.innerHTML =
-                    '<div class="sidebar-empty"><span class="icon">❤️</span><p>Empty</p></div>'; return; }
-            ct.innerHTML = liked.map(t => { const m = MOVIES.find(x => x.t === t); if (!m) return ''; return `
-                    <div class="sidebar-item" onclick="openDetails('${t.replace(/'/g,"\\'")}');closeSidebar()"><img src="${POSTER}${m.img}" alt="${t}"><div><h4>${t}</h4><p>⭐ ${m.r} • ${m.y}</p></div></div>`; }
-                ).join(''); }
+        function renderLikedSidebar() {
+            const liked = JSON.parse(localStorage.getItem('liked') || '[]');
+            const ct = document.getElementById('likedContent');
+            if (!liked.length) { ct.innerHTML = '<div class="sidebar-empty"><span class="icon">❤️</span><p>Empty</p></div>'; return; }
+            ct.innerHTML = liked.map(t => {
+                const m = MOVIES.find(x => x.t === t);
+                if (!m) return '';
+                return `<div class="sidebar-item" onclick="openDetails('${t.replace(/'/g,"\\'")}');closeSidebar()"><img src="${POSTER}${m.img}" alt="${t}"><div><h4>${t}</h4><p>⭐ ${m.r} • ${m.y}</p></div></div>`;
+            }).join('');
+        }
 
-        function renderNotifSidebar() { const ct = document.getElementById('notificationsContent'); if (!notifications
-                .length) { ct.innerHTML = '<div class="sidebar-empty"><span class="icon">🔔</span><p>Empty</p></div>'; return; }
-            ct.innerHTML = notifications.map(n => { const p = n.split('] '); return `<div class="notif-item">${p[1]||n}<div class="time">${p[0]?.replace('[','')||''}</div></div>`; }
-                ).join(''); }
+        function renderNotifSidebar() {
+            const ct = document.getElementById('notificationsContent');
+            if (!notifications.length) { ct.innerHTML = '<div class="sidebar-empty"><span class="icon">🔔</span><p>Empty</p></div>'; return; }
+            ct.innerHTML = notifications.map(n => { const p = n.split('] '); return `<div class="notif-item">${p[1]||n}<div class="time">${p[0]?.replace('[','')||''}</div></div>`; }).join('');
+        }
 
-        function addNotif(msg) { const t = new Date().toLocaleTimeString();
-            notifications.unshift(`[${t}] ${msg}`); if (notifications.length > 50) notifications.pop();
+        function addNotif(msg) {
+            const t = new Date().toLocaleTimeString();
+            notifications.unshift(`[${t}] ${msg}`);
+            if (notifications.length > 50) notifications.pop();
             localStorage.setItem('notifications', JSON.stringify(notifications));
-            updateAllBadges(); }
+            updateAllBadges();
+        }
 
-        function loadNotifications() { notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-            updateAllBadges(); }
+        function loadNotifications() { notifications = JSON.parse(localStorage.getItem('notifications') || '[]'); updateAllBadges(); }
 
-        function updateAllBadges() { const wl = JSON.parse(localStorage.getItem('wl') || '[]'); const liked = JSON.parse(
-                localStorage.getItem('liked') || '[]'); const wB = document.getElementById('wlBadge'); const lB = document
-                .getElementById('likedBadge'); const nB = document.getElementById('notifBadge'); if (wl.length) { wB.style
-                    .display = 'flex';
-                wB.textContent = wl.length; } else wB.style.display = 'none'; if (liked.length) { lB.style.display = 'flex';
-                lB.textContent = liked.length; } else lB.style.display = 'none'; if (notifications.length) { nB.style.display =
-                    'flex';
-                nB.textContent = notifications.length; } else nB.style.display = 'none'; }
+        function updateAllBadges() {
+            const wl = JSON.parse(localStorage.getItem('wl') || '[]');
+            const liked = JSON.parse(localStorage.getItem('liked') || '[]');
+            const wB = document.getElementById('wlBadge');
+            const lB = document.getElementById('likedBadge');
+            const nB = document.getElementById('notifBadge');
+            if (wl.length) { wB.style.display = 'flex'; wB.textContent = wl.length; } else wB.style.display = 'none';
+            if (liked.length) { lB.style.display = 'flex'; lB.textContent = liked.length; } else lB.style.display = 'none';
+            if (notifications.length) { nB.style.display = 'flex'; nB.textContent = notifications.length; } else nB.style.display = 'none';
+        }
 
-        function addRecent(title) { const m = MOVIES.find(x => x.t === title); if (!m) return; let recent = JSON.parse(
-                localStorage.getItem('recent') || '[]');
+        function addRecent(title) {
+            const m = MOVIES.find(x => x.t === title);
+            if (!m) return;
+            let recent = JSON.parse(localStorage.getItem('recent') || '[]');
             recent = recent.filter(r => r.title !== title);
-            recent.unshift({ title, img: m.img }); if (recent.length > 8) recent.pop();
+            recent.unshift({ title, img: m.img });
+            if (recent.length > 8) recent.pop();
             localStorage.setItem('recent', JSON.stringify(recent));
-            renderRecent(); }
+            renderRecent();
+        }
 
-        function renderRecent() { const recent = JSON.parse(localStorage.getItem('recent') || '[]'); const sec = document
-                .getElementById('recentSection'); const row = document.getElementById('recentRow'); if (!recent.length) { sec
-                    .classList.remove('show'); return; }
+        function renderRecent() {
+            const recent = JSON.parse(localStorage.getItem('recent') || '[]');
+            const sec = document.getElementById('recentSection');
+            const row = document.getElementById('recentRow');
+            if (!recent.length) { sec.classList.remove('show'); return; }
             sec.classList.add('show');
-            row.innerHTML = recent.map(r =>
-                `<div class="recent-card" onclick="openDetails('${r.title.replace(/'/g,"\\'")}')"><img src="${POSTER}${r.img}" alt="${r.title}" loading="lazy"><div class="r-title">${r.title}</div></div>`
-                ).join(''); }
+            row.innerHTML = recent.map(r => `<div class="recent-card" onclick="openDetails('${r.title.replace(/'/g,"\\'")}')"><img src="${POSTER}${r.img}" alt="${r.title}" loading="lazy"><div class="r-title">${r.title}</div></div>`).join('');
+        }
 
-        function toast(msg) { const a = document.getElementById('toastArea'); const t = document.createElement('div');
+        function toast(msg) {
+            const a = document.getElementById('toastArea');
+            const t = document.createElement('div');
             t.className = 'toast';
             t.textContent = msg;
             a.appendChild(t);
-            setTimeout(() => { t.style.opacity = '0';
-                t.style.transition = 'opacity 0.3s';
-                setTimeout(() => t.remove(), 300); }, 3000); if (a.children.length > 5) a.firstChild.remove(); }
+            setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+            if (a.children.length > 5) a.firstChild.remove();
+        }
 
-        function toggleTheme() { document.body.classList.toggle('light-mode'); const isL = document.body.classList.contains(
-                'light-mode');
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isL = document.body.classList.contains('light-mode');
             localStorage.setItem('theme', isL ? 'light' : 'dark');
-            toast(isL ? '☀️ Light' : '🌙 Dark'); }
+            toast(isL ? '☀️ Light' : '🌙 Dark');
+        }
 
-        function subscribeNewsletter() { const i = document.querySelector('.footer-nl input'); if (i && i.value.includes(
-                '@') && i.value.includes('.')) { toast('✅ Subscribed!');
-                addNotif('✅ Subscriber');
-                i.value = ''; } else toast('⚠️ Valid email please'); }
+        function subscribeNewsletter() {
+            const i = document.querySelector('.footer-nl input');
+            if (i && i.value.includes('@') && i.value.includes('.')) { toast('✅ Subscribed!'); addNotif('✅ Subscriber'); i.value = ''; }
+            else toast('⚠️ Valid email please');
+        }
 
-        window.addEventListener('scroll', () => { document.getElementById('progressBar').style.width = (window.scrollY / (
-                document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
-            document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400); }, { passive: true });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDetails();
-                closeSidebar(); } });
+        window.addEventListener('scroll', () => {
+            document.getElementById('progressBar').style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+            document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
+        }, { passive: true });
+        
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDetails(); closeSidebar(); } });
         document.getElementById('detailsModal').addEventListener('click', function(e) { if (e.target === this) closeDetails(); });
 
+        // Expose functions globally
         window.openDetails = openDetails;
         window.closeDetails = closeDetails;
         window.openSidebar = openSidebar;
