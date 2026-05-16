@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta name="monetag" content="cb27beb507fcb32da63aea81774d66a3">
+    <!-- ✅ Script 1: Quge5 -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="239709" async data-cfasync="false"></script>
+    
+    <!-- ✅ Script 2: Al5sm -->
     <script>(function(s){s.dataset.zone='11011995',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-   <script src="https://5gvci.com/act/files/tag.min.js?z=11012013" data-cfasync="false" async></script>
+    
+    <!-- ❌ Script 3: 5gvci REMOVED -->
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
     <meta name="theme-color" content="#141414" />
@@ -1409,7 +1414,7 @@
     <div class="hero"><h1>Movies<span class="accent">Explorer</span></h1><p>✦ 50+ Trending Movies ✦ Updated Weekly ✦</p></div>
     <div class="top10-section">
         <div class="top10-header"><span class="icon">🔥</span><h2>Top 10 Trending This Week</h2><span class="live-dot"></span></div>
-        <div class="top10-wrapper"><div class="top10-row" id="top10Row"></div><button class="top10-arrow prev" onclick="scrollTop10(-1)">❮</button><button class="top10-arrow next" onclick="scrollTop10(1)">❯</button></div>
+        <div class="top10-wrapper"><div class="top10-row" id="top10Row"></div><button class="top10-arrow prev" onclick="scrollTop10(-1)">❮</button><button class="top10-arrow next" onclick="scrollTop10(1)">❯</button></div></div>
     </div>
     <div class="stats"><span><span class="live-dot"></span> LIVE</span><span>📈 <strong>30K+</strong> views</span><span>⭐ <strong>8.0+</strong> avg</span><span>🎬 <strong>50</strong> movies</span><span>👥 <strong>5K+</strong> users</span></div>
     <div class="toolbar">
@@ -1431,7 +1436,13 @@
     <div class="toast-area" id="toastArea"></div>
 
     <script>
-        const AD_URL = 'https://beansnicerroller.com/my0cbe74j?key=b6340de156f305a16e38fb1fe693022c';
+        // ============================================
+        // ✅ AD LINK: https://omg10.com/4/11013066
+        // ✅ TIMER: 1 minute 30 seconds (90000 ms)
+        // ============================================
+        const AD_URL = 'https://omg10.com/4/11013066';
+        const AD_COOLDOWN = 90000;
+
         const YT_SEARCH = 'https://www.youtube.com/results?search_query=';
         const POSTER = 'https://image.tmdb.org/t/p/w500/';
         const STREAM_NAMES = { n: 'Netflix', h: 'HBO', p: 'Prime', d: 'Disney+', a: 'Apple', pp: 'Paramount+', hu: 'Hulu',
@@ -1676,18 +1687,22 @@
             return 'https://themoviebox.xyz/search?q=' + encodeURIComponent(title);
         }
 
+        // ✅ FIXED VERSION: 1st click = ad, 2nd click = movie
         function handleAdThenAction(clickMap, key, actionFn) {
             const now = Date.now();
             const last = clickMap[key] || 0;
-            if (!last || now - last > 1800000) {
+            
+            // Agar pehle click nahi kiya ya 90 second se zyada ho gaya
+            if (!last || now - last > AD_COOLDOWN) {
+                // 1st click: Sirf ad open karein
                 window.open(AD_URL, '_blank');
                 clickMap[key] = now;
                 toast('📢 Opening advertisement... Click again to proceed');
-                return false;
-            } else {
-                actionFn();
-                return true;
+                return; // ⚠️ IMPORTANT: Yahan return karna bhool gaye the
             }
+            
+            // 2nd click: Actual movie link open karein
+            actionFn();
         }
 
         // ===== VIDEO PREVIEW FUNCTIONS =====
